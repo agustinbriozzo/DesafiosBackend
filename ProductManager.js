@@ -140,5 +140,5 @@ const productIdToDelete = 2;
 productManager.deleteProduct(productIdToDelete);
 const productsAfterDelete = productManager.getProducts();
 console.log("This are the products that you have now")
-console.log(productsAfterDelete);
+console.log(productsAfterDelete); 
 */
