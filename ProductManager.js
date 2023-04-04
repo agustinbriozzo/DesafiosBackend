@@ -28,29 +28,38 @@ class ProductManager {
         console.log(`Product ${newProduct.id} added`);
     }
 
-    getProducts() {
+    getProducts(limit = null) {
+        const products = this.getProductsFromFile();
+        if (limit) {
+            return products.slice(0, limit);
+        }
+        return products;
+    }
+
+    getProductsFromFile() {
         try {
-            const data = fs.readFileSync(this.path, "utf-8");
+            const data = fs.readFileSync(this.path, 'utf-8');
             return JSON.parse(data);
-            } catch (error) {
+        } catch (error) {
+            console.error(error);
             return [];
         }
     }
 
     getProductById(id) {
-        const products = this.getProducts();
+        const products = this.getProductsFromFile();
         const product = products.find((p) => p.id === id);
 
         if (!product) {
             console.error(`Product ${id} not found`);
-            return;
+            return null;
         }
 
         return product;
     }
 
     updateProduct(id, newProduct) {
-        const products = this.getProducts();
+        const products = this.getProductsFromFile();
         const productIndex = products.findIndex((p) => p.id === id);
 
         if (productIndex < 0) {
@@ -70,7 +79,7 @@ class ProductManager {
     }
 
     deleteProduct(id) {
-        const products = this.getProducts();
+        const products = this.getProductsFromFile();
         const productIndex = products.findIndex((p) => p.id === id);
 
         if (productIndex < 0) {
@@ -88,6 +97,10 @@ class ProductManager {
         fs.writeFileSync(this.path, data);
     }
 }
+
+
+module.exports = {ProductManager}
+
 
 
 
